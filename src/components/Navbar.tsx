@@ -1,92 +1,97 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useState } from 'react';
 
-const links = [
-  { href: '#home', label: 'Home' },
-  { href: '#plans', label: 'Plans' },
-  { href: '#amenities', label: 'Amenities' },
-  { href: '#gallery', label: 'Gallery' },
-  { href: '#contact', label: 'Contact' },
+const NAV = [
+  { label: 'Home', href: '#top', external: false },
+  { label: 'Amenities', href: '#amenities', external: false }, // your Features section should have id="amenities"
+  { label: 'Gallery', href: '#gallery', external: false },
+  {
+    label: 'Availability',
+    href: 'https://myhome.anewgo.com/client/bccoklahoma/community/The%20Fountains/siteplan',
+    external: true,
+  },
+  { label: 'Contact', href: '#contact', external: false },
 ];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
-    onScroll();
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
   return (
-    <header
-      className={[
-        'fixed inset-x-0 top-0 z-50 transition-colors',
-        scrolled ? 'bg-brand-950/80 backdrop-blur-md shadow-md' : 'bg-transparent',
-      ].join(' ')}
-      aria-label="Site Navigation"
-    >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        {/* Logo / Brand */}
-        <Link href="#home" className="font-semibold tracking-tight text-light text-lg md:text-xl">
+    <header className="sticky top-0 z-40 border-b border-black/5 bg-white/80 backdrop-blur-md">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
+        <Link href="#top" className="text-lg font-semibold tracking-tight text-brand-900">
           The Fountains Studio
         </Link>
 
-        {/* Desktop nav */}
-        <ul className="hidden gap-6 md:flex">
-          {links.map((l) => (
-            <li key={l.href}>
-              <a
-                href={l.href}
-                className="text-light/80 hover:text-light transition-colors"
-              >
-                {l.label}
-              </a>
-            </li>
-          ))}
+        {/* Desktop */}
+        <ul className="hidden items-center gap-6 md:flex">
+          {NAV.map((item) =>
+            item.external ? (
+              <li key={item.label}>
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-medium text-brand-900/80 transition hover:text-brand-900"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ) : (
+              <li key={item.label}>
+                <Link
+                  href={item.href}
+                  className="text-sm font-medium text-brand-900/80 transition hover:text-brand-900"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            )
+          )}
         </ul>
 
         {/* Mobile toggle */}
         <button
-          className="inline-flex items-center justify-center md:hidden rounded-md p-2 text-light/80 hover:text-light focus:outline-none focus:ring-2 focus:ring-light/50"
           onClick={() => setOpen((v) => !v)}
+          className="inline-flex items-center rounded-md border border-black/10 px-3 py-2 text-sm text-brand-900 md:hidden"
           aria-label="Toggle menu"
           aria-expanded={open}
         >
-          <svg
-            className="h-6 w-6"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-          >
-            {open ? (
-              <path strokeWidth="2" strokeLinecap="round" d="M6 18L18 6M6 6l12 12" />
-            ) : (
-              <path strokeWidth="2" strokeLinecap="round" d="M4 6h16M4 12h16M4 18h16" />
-            )}
-          </svg>
+          Menu
         </button>
       </nav>
 
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden border-t border-white/10 bg-brand-950/90 backdrop-blur">
-          <ul className="space-y-2 px-6 py-4">
-            {links.map((l) => (
-              <li key={l.href}>
-                <a
-                  href={l.href}
-                  className="block rounded-md px-2 py-2 text-light/90 hover:text-light"
-                  onClick={() => setOpen(false)}
-                >
-                  {l.label}
-                </a>
-              </li>
-            ))}
+        <div className="border-t border-black/5 bg-white md:hidden">
+          <ul className="mx-auto max-w-6xl px-6 py-3 space-y-2">
+            {NAV.map((item) =>
+              item.external ? (
+                <li key={item.label}>
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block rounded-md px-3 py-2 text-brand-900/80 hover:bg-black/[0.03] hover:text-brand-900"
+                    onClick={() => setOpen(false)}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ) : (
+                <li key={item.label}>
+                  <Link
+                    href={item.href}
+                    className="block rounded-md px-3 py-2 text-brand-900/80 hover:bg-black/[0.03] hover:text-brand-900"
+                    onClick={() => setOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              )
+            )}
           </ul>
         </div>
       )}

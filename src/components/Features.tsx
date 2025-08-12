@@ -1,30 +1,34 @@
-import FeatureCard from './FeatureCard';
-import Section from './Section';
+'use client';
+
+import { features } from '@/data/features';
 
 export default function Features() {
   return (
-    <Section id="amenities">
-      <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-light">Luxury without the upkeep</h2>
-        <p className="mt-3 text-light/80">
-          Low-maintenance, single-level living with curated finishes and thoughtful details.
-        </p>
-      </div>
+    <section id="amenities" className="section">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="text-3xl font-semibold tracking-tight text-brand-900 md:text-4xl">
+            Luxury without the upkeep
+          </h2>
+          <p className="mt-3 text-brand-700/80">
+            Low-maintenance, single-level living with curated finishes and thoughtful details.
+          </p>
+        </div>
 
-      <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <FeatureCard
-          title="Single-Level Floorplans"
-          body="Step-free layouts that make each day effortless."
-        />
-        <FeatureCard
-          title="Lock-and-Leave"
-          body="Exterior maintenance handled — just enjoy your life."
-        />
-        <FeatureCard
-          title="Timeless Materials"
-          body="Warm wood, stone, and textures that age beautifully."
-        />
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {features.map((f) => (
+            <div
+              key={f.title}
+              className="rounded-xl border border-black/5 bg-white/80 p-6 shadow-sm ring-1 ring-black/5 backdrop-blur-sm transition hover:shadow-md"
+            >
+              <h3 className="text-lg font-semibold text-brand-900">{f.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-brand-700/80">
+                {f.description}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
-    </Section>
+    </section>
   );
 }

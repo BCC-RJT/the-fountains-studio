@@ -1,19 +1,17 @@
 import Hero from '@/components/Hero';
 import Features from '@/components/Features';
-import Gallery from '@/components/Gallery';
-import CTA from '@/components/CTA';
-import Footer from '@/components/Footer';
+import MasonryGallery from '@/components/MasonryGallery';
+import ContactCTA from '@/components/ContactCTA'; // if you have one
+import Footer from '@/components/Footer';         // optional
 
-
-export default function HomePage() {
+export default function Home() {
   return (
-    <main id="home">
+    <main>
       <Hero />
       <Features />
-      <Gallery />
-      <CTA />
+      <MasonryGallery />
+      <ContactCTA />
       <Footer />
     </main>
-
   );
 }
