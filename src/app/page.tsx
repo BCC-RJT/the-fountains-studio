@@ -1,15 +1,15 @@
 import Hero from '@/components/Hero';
 import Features from '@/components/Features';
-import MasonryGallery from '@/components/MasonryGallery';
-import ContactCTA from '@/components/ContactCTA'; // if you have one
-import Footer from '@/components/Footer';         // optional
+import CarouselGallery from '@/components/CarouselGallery';
+import ContactCTA from '@/components/ContactCTA';
+import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
     <main>
       <Hero />
       <Features />
-      <MasonryGallery />
+      <CarouselGallery />
       <ContactCTA />
       <Footer />
     </main>
