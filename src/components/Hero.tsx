@@ -1,27 +1,31 @@
 export default function Hero() {
   return (
-    <section className="relative isolate overflow-hidden bg-gradient-to-br from-brand-700 via-brand-600 to-brand-800 text-white">
-      <div className="container py-24 md:py-36">
-        <p className="text-brand-200 mb-4 font-medium uppercase tracking-wider">
-          The Fountains • Bixby, OK
-        </p>
-        <h1 className="text-4xl md:text-6xl font-semibold leading-[1.05]">
-          Luxury downsizing,
-          <br /> single-level living.
+    <section
+      aria-label="Welcome to The Fountains at Bixby"
+      className="relative min-h-[92svh] bg-cover bg-center"
+      style={{ backgroundImage: "url('/images/DSC05250.jpg')" }}
+    >
+      {/* dim overlay */}
+      <div className="absolute inset-0 bg-black/50" aria-hidden="true" />
+
+      {/* content */}
+      <div className="relative z-10 max-w-7xl mx-auto h-[92svh] flex flex-col items-center justify-center px-6 text-center text-white">
+        <h1 className="animate-slideUp text-4xl font-bold md:text-6xl lg:text-7xl">
+          The Fountains at Bixby
         </h1>
-        <p className="mt-6 max-w-2xl text-lg text-brand-100">
-          Low-maintenance homes, curated amenities, and a quiet gated community designed
-          for comfort and style.
+
+        <p className="animate-fadeIn mt-4 max-w-2xl text-lg md:text-xl/8">
+          Luxury, low-maintenance, single-level living. Thoughtful design,
+          timeless finishes, and the convenience you’ve been waiting for.
         </p>
 
-        <div className="mt-10 flex flex-wrap items-center gap-4">
-          <a href="#contact" className="btn-primary">Schedule a Tour</a>
-          <a href="#about" className="btn-outline">Explore Community</a>
-        </div>
+        <a
+          href="#learn-more"
+          className="mt-8 px-6 py-3 bg-white text-black rounded shadow hover:bg-gray-200 transition"
+        >
+          Learn More
+        </a>
       </div>
-
-      {/* soft decorative */}
-      <div className="pointer-events-none absolute -top-24 -right-24 size-[28rem] rounded-full bg-white/10 blur-3xl" />
     </section>
   );
 }

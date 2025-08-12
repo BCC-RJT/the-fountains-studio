@@ -1,21 +1,16 @@
-export default function Gallery() {
-  const images = [
-    "https://images.unsplash.com/photo-1523217582562-09d0def993a6?q=80&w=1400&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1515263487990-61b07816b324?q=80&w=1400&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1400&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1400&auto=format&fit=crop",
-  ];
+import Image from 'next/image'
+import { galleryImages } from '@/data/gallery'
+
+export default function MasonryGallery() {
   return (
-    <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
-      {images.map((src, i) => (
-        <img
-          key={i}
-          src={src}
-          alt=""
-          className="h-48 w-full rounded-xl object-cover md:h-56"
-          loading="lazy"
-        />
+    <div className="columns-1 sm:columns-2 md:columns-3 gap-4 [column-fill:_balance]">
+      {galleryImages.map((src,i)=>(
+        <div key={i} className="mb-4 break-inside-avoid rounded-2xl overflow-hidden border border-white/10">
+          <div className="relative w-full h-64">
+            <Image src={src} alt="" fill className="object-cover" />
+          </div>
+        </div>
       ))}
     </div>
-  );
+  )
 }

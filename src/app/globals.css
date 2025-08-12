@@ -2,24 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-html { scroll-behavior: smooth; }
+/* ---------- Custom theme helpers ---------- */
+@layer utilities {
+  /* brand text color pulled from your config */
+  .text-light { @apply text-[#EDEBE6]; }
 
-@layer components {
-  .section {
-    @apply py-16 md:py-24;
+  /* section spacing – no responsive variant inside @apply */
+  .section { @apply py-16; }
+  @screen md {
+    .section { @apply py-24; }
   }
-  .section-title {
-    @apply text-3xl md:text-4xl font-semibold tracking-tight;
-  }
-  .muted {
-    @apply text-zinc-600;
-  }
-  .btn-primary {
-    @apply inline-flex items-center gap-2 rounded-lg bg-brand-600 px-5 py-3
-    text-white font-medium shadow hover:bg-brand-700 transition;
-  }
-  .btn-outline {
-    @apply inline-flex items-center gap-2 rounded-lg border border-zinc-300
-    px-5 py-3 text-zinc-800 hover:bg-zinc-50 transition;
-  }
+
+  /* background image + cover shortcut */
+  .bg-hero   { background-image: url('/images/hero.jpg'); }
+  .bg-cover  { @apply bg-center bg-no-repeat bg-cover; }
+
+  /* simple fade/slide keyframes used in Hero */
+  @keyframes fadeIn   { from {opacity:0} to {opacity:1} }
+  @keyframes slideUp  { from {transform:translateY(16px); opacity:0} to {transform:none; opacity:1} }
+  .animate-fadeIn  { animation: fadeIn .8s ease .2s both; }
+  .animate-slideUp { animation: slideUp .7s ease .1s both; }
 }
