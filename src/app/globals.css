@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+html { scroll-behavior: smooth; }
+
 /* ---------- Custom theme helpers ---------- */
 @layer utilities {
   /* brand text color pulled from your config */
@@ -15,7 +17,7 @@
 
   /* background image + cover shortcut */
   .bg-hero   { background-image: url('/images/hero.jpg'); }
-  .bg-cover  { @apply bg-center bg-no-repeat bg-cover; }
+
 
   /* simple fade/slide keyframes used in Hero */
   @keyframes fadeIn   { from {opacity:0} to {opacity:1} }

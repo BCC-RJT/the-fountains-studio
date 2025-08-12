@@ -4,6 +4,7 @@ import Gallery from '@/components/Gallery';
 import CTA from '@/components/CTA';
 import Footer from '@/components/Footer';
 
+
 export default function HomePage() {
   return (
     <main id="home">
@@ -13,5 +14,6 @@ export default function HomePage() {
       <CTA />
       <Footer />
     </main>
+
   );
 }
