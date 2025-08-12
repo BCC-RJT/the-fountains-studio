@@ -1,17 +1,24 @@
-import './globals.css'
-import type { Metadata } from 'next'
+// src/app/layout.tsx
+import type { Metadata } from 'next';
+import './globals.css';
+import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
   title: 'The Fountains Studio',
   description: 'Luxury, low-maintenance, single-level living.',
-}
+};
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <body className="bg-[#0B0F14] text-[#E5E7EB]">
+      <body className="bg-page text-light antialiased">
+        <Navbar />
         {children}
       </body>
     </html>
-  )
+  );
 }
