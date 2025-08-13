@@ -31,7 +31,7 @@ export const features: FeatureItem[] = [
       'Enjoy a loop through the neighborhood or connect to the Bixby trail system.',
   },
   {
-    title: 'Suburban serenity with urban convenience',
+    title: 'Location',
     description:
       'Conveniently located near shopping centers, dining establishments, and major highways, offering easy access to the greater Tulsa region.',
   },

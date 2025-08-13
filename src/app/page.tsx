@@ -1,8 +1,13 @@
 import Hero from '@/components/Hero';
 import Features from '@/components/Features';
 import CarouselGallery from '@/components/CarouselGallery';
-import ContactCTA from '@/components/ContactCTA';
+//import ContactCTA from '@/components/ContactCTA';
 import Footer from '@/components/Footer';
+import ContactForm from '@/components/ContactForm';
+
+// ...
+<ContactForm />
+
 
 export default function Home() {
   return (
@@ -10,7 +15,7 @@ export default function Home() {
       <Hero />
       <Features />
       <CarouselGallery />
-      <ContactCTA />
+      <ContactForm />
       <Footer />
     </main>
   );

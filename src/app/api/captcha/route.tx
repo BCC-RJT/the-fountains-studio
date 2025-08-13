@@ -1,0 +1,41 @@
+export const runtime = 'nodejs';
+
+import { NextResponse } from 'next/server';
+import crypto from 'crypto';
+
+const TTL_MS = 10 * 60 * 1000; // 10 minutes
+
+export async function GET() {
+  const a = 1 + Math.floor(Math.random() * 9);
+  const b = 1 + Math.floor(Math.random() * 9);
+  const ts = Date.now();
+  const payload = `${a}.${b}.${ts}`;
+  const secret = process.env.SITE_SECRET ?? '';
+  const sig = crypto.createHmac('sha256', secret).update(payload).digest('hex');
+  const token = `${payload}.${sig}`;
+
+  return NextResponse.json({
+    question: `What is ${a} + ${b}?`,
+    token,
+    expiresAt: ts + TTL_MS,
+  });
+}
+
+// Helper for the contact route to verify tokens
+export function verifyCaptcha(token: string, answer: string) {
+  const [aStr, bStr, tsStr, sig] = token.split('.');
+  const secret = process.env.SITE_SECRET ?? '';
+  if (!aStr || !bStr || !tsStr || !sig || !secret) return false;
+
+  const payload = `${aStr}.${bStr}.${tsStr}`;
+  const expectedSig = crypto.createHmac('sha256', secret).update(payload).digest('hex');
+  if (!crypto.timingSafeEqual(Buffer.from(expectedSig), Buffer.from(sig))) return false;
+
+  const ts = Number(tsStr);
+  if (!Number.isFinite(ts) || Date.now() - ts > 10 * 60 * 1000) return false; // expired
+
+  const a = Number(aStr);
+  const b = Number(bStr);
+  const expectedAnswer = (a + b).toString().trim();
+  return expectedAnswer === answer.trim();
+}
