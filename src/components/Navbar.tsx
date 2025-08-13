@@ -22,7 +22,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 border-b border-black/5 bg-white/80 backdrop-blur-md">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
         <Link href="#top" className="text-lg font-semibold tracking-tight text-brand-900">
-          The Fountains Studio
+          The Fountains at Bixby
         </Link>
 
         {/* Desktop */}

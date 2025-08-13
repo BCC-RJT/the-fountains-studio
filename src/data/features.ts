@@ -28,11 +28,11 @@ export const features: FeatureItem[] = [
   {
     title: 'Community Walking Trail',
     description:
-      'Enjoy a loop through the neighborhood greenspace for fresh air and movement.',
+      'Enjoy a loop through the neighborhood or connect to the Bixby trail system.',
   },
   {
-    title: 'Clubhouse & Gathering',
+    title: 'Suburban serenity with urban convenience',
     description:
-      'A welcoming space for neighbors, small events, and casual get-togethers.',
+      'Conveniently located near shopping centers, dining establishments, and major highways, offering easy access to the greater Tulsa region.',
   },
 ];
