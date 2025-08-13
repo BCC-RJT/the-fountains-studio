@@ -1,67 +1,19 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
-type Captcha = { question: string; token: string; expiresAt: number };
+import { useForm, ValidationError } from '@formspree/react';
+import { useEffect } from 'react';
 
 export default function ContactForm() {
-  const [captcha, setCaptcha] = useState<Captcha | null>(null);
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
-  const [error, setError] = useState<string>('');
+  // Wire up to your Formspree form ID from the screenshot
+  const [state, handleSubmit] = useForm('mqalnval');
 
-  // load captcha on mount
+  // Optional: scroll success/error into view after submit
   useEffect(() => {
-    refreshCaptcha();
-  }, []);
-
-  function refreshCaptcha() {
-    setCaptcha(null);
-    fetch('/api/captcha', { cache: 'no-store' })
-      .then((r) => r.json())
-      .then(setCaptcha)
-      .catch(() => setCaptcha(null));
-  }
-
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setStatus('sending');
-    setError('');
-
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-    const payload = Object.fromEntries(formData.entries()) as Record<string, string>;
-
-    try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          name: payload.name,
-          email: payload.email,
-          phone: payload.phone,
-          message: payload.message,
-          captchaAnswer: payload.captchaAnswer,
-          captchaToken: payload.captchaToken,
-        }),
-      });
-
-      const data = await res.json();
-      if (!res.ok || !data.ok) {
-        setStatus('error');
-        setError(data?.error || 'Submission failed.');
-        refreshCaptcha();
-        return;
-      }
-
-      setStatus('sent');
-      form.reset();
-      refreshCaptcha();
-    } catch {
-      setStatus('error');
-      setError('Network error.');
-      refreshCaptcha();
+    if (state.succeeded || state.errors.length > 0) {
+      const el = document.getElementById('contact');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  }
+  }, [state.succeeded, state.errors]);
 
   return (
     <section id="contact" className="section">
@@ -73,7 +25,11 @@ export default function ContactForm() {
           Ask a question or request a visit — we’ll reply promptly.
         </p>
 
-        <form className="mt-6 grid gap-4" onSubmit={onSubmit}>
+        <form className="mt-6 grid gap-4" onSubmit={handleSubmit}>
+          {/* Subject for emails shown in your inbox */}
+          <input type="hidden" name="_subject" value="Fountains website inquiry" />
+          {/* Optional redirect after success: <input type="hidden" name="_next" value="https://yourdomain.com/thank-you" /> */}
+
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label className="block text-sm font-medium text-brand-900">Name *</label>
@@ -83,7 +39,9 @@ export default function ContactForm() {
                 className="mt-1 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-brand-900 shadow-sm outline-none focus:ring-2 focus:ring-brand-400"
                 placeholder="Jane Smith"
               />
+              <ValidationError prefix="Name" field="name" errors={state.errors} />
             </div>
+
             <div>
               <label className="block text-sm font-medium text-brand-900">Email *</label>
               <input
@@ -93,6 +51,7 @@ export default function ContactForm() {
                 className="mt-1 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-brand-900 shadow-sm outline-none focus:ring-2 focus:ring-brand-400"
                 placeholder="jane@example.com"
               />
+              <ValidationError prefix="Email" field="email" errors={state.errors} />
             </div>
           </div>
 
@@ -105,12 +64,11 @@ export default function ContactForm() {
               className="mt-1 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-brand-900 shadow-sm outline-none focus:ring-2 focus:ring-brand-400"
               placeholder="918-200-9780"
             />
+            <ValidationError prefix="Phone" field="phone" errors={state.errors} />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-brand-900">
-              Comments / Questions *
-            </label>
+            <label className="block text-sm font-medium text-brand-900">Comments / Questions *</label>
             <textarea
               name="message"
               required
@@ -118,35 +76,18 @@ export default function ContactForm() {
               className="mt-1 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-brand-900 shadow-sm outline-none focus:ring-2 focus:ring-brand-400"
               placeholder="Tell us what you’re looking for…"
             />
+            <ValidationError prefix="Message" field="message" errors={state.errors} />
           </div>
 
-          {/* CAPTCHA */}
-          <div className="grid gap-2 sm:grid-cols-[1fr,auto] sm:items-end">
-            <div>
-              <label className="block text-sm font-medium text-brand-900">Captcha *</label>
-              <div className="mt-1 flex items-center gap-3">
-                <input
-                  name="captchaAnswer"
-                  required
-                  className="w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-brand-900 shadow-sm outline-none focus:ring-2 focus:ring-brand-400"
-                  placeholder={captcha ? captcha.question : 'Loading…'}
-                  aria-label={captcha ? captcha.question : 'Loading captcha'}
-                />
-                <button
-                  type="button"
-                  onClick={refreshCaptcha}
-                  className="rounded-md border border-black/10 bg-white px-3 py-2 text-sm text-brand-900 hover:bg-white/90"
-                  title="New challenge"
-                >
-                  ↻
-                </button>
-              </div>
-            </div>
-            {/* hidden token */}
-            <input type="hidden" name="captchaToken" value={captcha?.token ?? ''} />
+          {/* Optional: invisible honeypot to deter bots (keep it empty) */}
+          <div className="hidden">
+            <label>
+              Don’t fill this out if you’re human:
+              <input name="_gotcha" tabIndex={-1} autoComplete="off" />
+            </label>
           </div>
 
-          {/* fixed business contact for clarity */}
+          {/* Business contact clarity */}
           <p className="mt-1 text-xs text-brand-700/70">
             Or email us directly at{' '}
             <a href="mailto:web@tnhok.com" className="underline">
@@ -162,20 +103,22 @@ export default function ContactForm() {
           <div className="mt-2 flex items-center justify-center">
             <button
               type="submit"
-              disabled={status === 'sending'}
+              disabled={state.submitting}
               className="inline-flex items-center justify-center rounded-full bg-brand-600 px-6 py-3 text-sm font-medium text-white shadow-sm transition hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 disabled:opacity-60"
             >
-              {status === 'sending' ? 'Sending…' : 'Send message'}
+              {state.submitting ? 'Sending…' : 'Send message'}
             </button>
           </div>
 
-          {status === 'sent' && (
+          {state.succeeded && (
             <p className="text-center text-sm text-emerald-700">
               Thanks! Your message has been sent.
             </p>
           )}
-          {status === 'error' && (
-            <p className="text-center text-sm text-red-600">{error || 'Something went wrong.'}</p>
+          {!state.succeeded && state.errors.length > 0 && (
+            <p className="text-center text-sm text-red-600">
+              Something went wrong. Please check your entries and try again.
+            </p>
           )}
         </form>
       </div>
