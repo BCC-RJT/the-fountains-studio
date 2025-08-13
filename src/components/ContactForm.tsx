@@ -4,12 +4,12 @@ import { useForm, ValidationError } from '@formspree/react';
 import { useEffect } from 'react';
 
 export default function ContactForm() {
-  // Wire up to your Formspree form ID from the screenshot
+  // Hooked to your Formspree form ID
   const [state, handleSubmit] = useForm('mqalnval');
 
-  // Optional: scroll success/error into view after submit
+  // Smoothly scroll the section into view after a submit attempt
   useEffect(() => {
-    if (state.succeeded || state.errors.length > 0) {
+    if (state.succeeded || state.errors) {
       const el = document.getElementById('contact');
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -28,7 +28,8 @@ export default function ContactForm() {
         <form className="mt-6 grid gap-4" onSubmit={handleSubmit}>
           {/* Subject for emails shown in your inbox */}
           <input type="hidden" name="_subject" value="Fountains website inquiry" />
-          {/* Optional redirect after success: <input type="hidden" name="_next" value="https://yourdomain.com/thank-you" /> */}
+          {/* Optional redirect after success:
+              <input type="hidden" name="_next" value="https://yourdomain.com/thank-you" /> */}
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
@@ -115,7 +116,9 @@ export default function ContactForm() {
               Thanks! Your message has been sent.
             </p>
           )}
-          {!state.succeeded && state.errors.length > 0 && (
+
+          {/* Show a generic error only when Formspree reports one */}
+          {!state.succeeded && state.errors && (
             <p className="text-center text-sm text-red-600">
               Something went wrong. Please check your entries and try again.
             </p>

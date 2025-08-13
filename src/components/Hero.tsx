@@ -20,7 +20,7 @@ export default function Hero() {
         </p>
 
         <a
-          href="#learn-more"
+          href="#amenities"
           className="mt-8 px-6 py-3 bg-white text-black rounded shadow hover:bg-gray-200 transition"
         >
           Learn More

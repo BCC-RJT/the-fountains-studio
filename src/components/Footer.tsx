@@ -6,7 +6,6 @@ export default function Footer() {
           © {new Date().getFullYear()} Sooner Development Group - Fountains LLC — All rights reserved.
         </p>
         <div className="text-sm text-light/70">
-          // Built with Next.js & Tailwind
         </div>
       </div>
     </footer>
